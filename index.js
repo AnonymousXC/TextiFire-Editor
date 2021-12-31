@@ -222,12 +222,12 @@ const menu_templete = [
         ]
     },
     {
-        label: 'Theme',
+        label: 'Settings',
         submenu: [
             {
-                label: 'Set Theme',
+                label: 'Open Settings',
                 click: () => {
-                    const themeWindow = new BrowserWindow({
+                    const settingsWindow = new BrowserWindow({
                         height: 400,
                         width: 400,
                         webPreferences: {
@@ -238,11 +238,12 @@ const menu_templete = [
                         // icon: path.join(__dirname, 'assets', 'img', 'icon.png'),
                         // title: 'My App',
                     });
-                    themeWindow.removeMenu();
-                    themeWindow.setTitle('My App');
-                    themeWindow.loadFile(path.join(__dirname, './themes/theme.html'));
-                    ipcMain.on('theme', (event, theme) => {
-                        win.webContents.send('set_theme', theme);
+                    settingsWindow.removeMenu();
+                    settingsWindow.webContents.openDevTools();
+                    settingsWindow.setTitle('My App');
+                    settingsWindow.loadFile(path.join(__dirname, './src/settings/settings.html'));
+                    ipcMain.on('settings', (event, settings) => {
+                        win.webContents.send('change_settings', settings);
                     })
                 }
             }
