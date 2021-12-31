@@ -219,6 +219,18 @@ const menu_templete = [
             {
                 label: 'Status Bar',
             },
+            {
+                label: 'Spilt 1',
+                click: () => {
+                    win.webContents.send('single_editor', null);
+                }
+            },
+            {
+                label: 'Split 2',
+                click: () => {
+                    win.webContents.send('double_editor', null);
+                }
+            }
         ]
     },
     {
@@ -230,6 +242,7 @@ const menu_templete = [
                     const settingsWindow = new BrowserWindow({
                         height: 400,
                         width: 400,
+                        alwaysOnTop: true,
                         webPreferences: {
                             nodeIntegration: true,
                             enableRemoteModule: true,
