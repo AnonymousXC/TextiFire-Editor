@@ -1,0 +1,21 @@
+* {
+    margin: 0px;
+}
+
+.box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+select {
+    border: solid;
+    border-width: 1px;
+}
+
+input {
+    border: solid;
+    border-width: 1px;
+}
