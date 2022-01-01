@@ -25,6 +25,39 @@ function search_gog() {
         shell.openExternal('https://www.google.com/search?q=' + txt)
 }
 
+function close_search() {
+    document.getElementById('editor-1').focus();
+    document.getElementById('find').style.visibility = 'hidden';
+}
+
+function close_goto() {
+    document.getElementById('editor-1').focus();
+    document.getElementById('goto').style.visibility = 'hidden';
+}
+
+function find() {
+    const txt = document.getElementById('find-txt').value;
+    console.log('running');
+    editor_1.findAll(txt);
+}
+
+function find_next() {
+    editor_1.findNext();
+}
+
+function find_pre() {
+    editor_1.findPrevious();
+}
+
+
+function goto_line() {
+    const line = document.getElementById('line-num').value;
+    console.log(line);
+    editor_1.gotoLine(line, 0, false);
+    editor_1.scrollToLine(line, true, true);
+}
+
+
 
 ipcRenderer.on('new' , (event) => {
     editor_1.setValue('');
@@ -44,8 +77,18 @@ ipcRenderer.on('search_gog', (event) => {
 });
 
 
-ipcRenderer.on('find_word', (event, word) => {
-    editor_1.findAll(word);
+// ipcRenderer.on('find_word', (event, word) => {
+//     document.getElementById('find').style.visibility = 'visible';
+//     editor_1.findAll(word);
+// });
+
+
+ipcRenderer.on('find', (event) => {
+    document.getElementById('find').style.visibility = 'visible';
+});
+
+ipcRenderer.on('goto', (event) => {
+    document.getElementById('goto').style.visibility = 'visible';
 });
 
 
@@ -76,6 +119,7 @@ ipcRenderer.on('double_editor', () =>{
         editor_22.style.position = 'absolute';
         document.getElementById('editor-1').style.right = '50%';
         document.getElementById('editor-1').style.left = 0;
+        document.getElementById('editor-1').style.position = 'fixed';
         editor_22.style.top = 0;
         editor_22.style.bottom = 0;
         editor_22.style.left = '50%';

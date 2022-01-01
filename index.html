@@ -16,11 +16,24 @@
 <body>
 
     <div id="editor-1">Hello World!</div>
+    <div id="find">
+        <label style="font-size: x-small; top: 0;margin-left: 2px;">Find:</label> 
+        <input type="text" name="" id="find-txt", oninput="find()"> 
+        <button id="find-next" class="find-btn", onclick="find_next()">&#8595</button>
+        <button id="find-pre" class="find-btn", onclick="find_pre()">&#8593</button>
+        <button id="close" onclick="close_search()" class="find-btn">&#x2715</button> <br>
+    </div>
+    <div id="goto">
+        <label>Go To :</label>
+        <input type="number" name="line" id="line-num", oninput="goto_line()">
+        <button id="close", class="find-btn", onclick="close_goto()">&#x2715</button>
+    </div>
 
 </body>
 
 <script>
     var editor_1 = ace.edit("editor-1");
+    editor_1.setTheme('ace/theme/terminal')
 </script>
 
 </html>

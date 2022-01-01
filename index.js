@@ -45,13 +45,15 @@ const menu_templete = [
                 label:'New',
                 click: () => {
                     win.webContents.send("new", null);
-                }
+                },
+                accelerator: 'Ctrl + N',
             },
             {
                 label: 'New Window',
                 click: () => {
                     createWindow();
-                }
+                },
+                accelerator: 'Ctrl + Shift + N',
             },
             {
                 label: 'Open...',
@@ -63,7 +65,8 @@ const menu_templete = [
                         win.webContents.send("open_file" , filepath[0]);
                         savepath = filepath[0];
                     }
-                }
+                },
+                accelerator: 'Ctrl + O',
             },
             {
                 label: 'Save',
@@ -74,7 +77,8 @@ const menu_templete = [
                         });
                     }
                     win.webContents.send('save_file', savepath);
-                }
+                },
+                accelerator: 'Ctrl + S',
             },
             {
                 label: 'Save As',
@@ -82,7 +86,8 @@ const menu_templete = [
                     savepath = dialog.showSaveDialogSync(win, {
                         properties: ['saveFile']
                     });
-                }
+                },
+                accelerator: 'Ctrl + Shift + S',
             },
             {
                 type: 'separator',
@@ -91,13 +96,15 @@ const menu_templete = [
                 label: 'Print',
                 click: () => {
                     win.webContents.print();
-                }
+                },
+                accelerator: 'Ctrl + P',
             },
             {
                 label: 'Print Setup...',
                 click: () => {
                     win.webContents.print();
-                }
+                },
+                accelerator: 'Ctrl + Shift + P',
             },
             {
                 type: 'separator',
@@ -138,44 +145,43 @@ const menu_templete = [
                 label: 'Search With Google...',
                 click: () => {
                     win.webContents.send('search_gog', null);
-                }
+                },
+                accelerator: 'Ctrl + E',
             },
             {
                 label: 'Find...',
                 click: () => {
-                    const findWindow = new BrowserWindow({
-                        height: 300,
-                        width: 400,
-                        webPreferences: {
-                            nodeIntegration: true,
-                            enableRemoteModule: true,
-                            contextIsolation: false
-                        },
-                        // icon: path.join(__dirname, 'assets', 'img', 'icon.png'),
-                        // title: 'My App',
-                    });
-                    findWindow.removeMenu();
-                    findWindow.webContents.openDevTools();
-                    findWindow.setTitle('My App');
-                    findWindow.loadFile(path.join(__dirname, './find/find.html'));
-                    ipcMain.on('find', (event, word) => {
-                        win.webContents.send('find_word', word);
-                        findWindow.close();
-                        win.focus();
-                    })
+                    // const findWindow = new BrowserWindow({
+                    //     height: 300,
+                    //     width: 400,
+                    //     webPreferences: {
+                    //         nodeIntegration: true,
+                    //         enableRemoteModule: true,
+                    //         contextIsolation: false
+                    //     },
+                    //     // icon: path.join(__dirname, 'assets', 'img', 'icon.png'),
+                    //     // title: 'My App',
+                    // });
+                    // findWindow.removeMenu();
+                    // findWindow.webContents.openDevTools();
+                    // findWindow.setTitle('My App');
+                    // findWindow.loadFile(path.join(__dirname, './src/find/find.html'));
+                    // ipcMain.on('find', (event, word) => {
+                    //     win.webContents.send('find_word', word);
+                    //     findWindow.close();
+                    //     win.focus();
+                    // })
+                    win.webContents.send('find', null);
                 }
-            },
-            {
-                label: 'Find Next',
-            },
-            {
-                label: 'Find Previous',
             },
             {
                 label: 'Replace',
             },
             {
                 label: 'Go To...',
+                click: () => {
+                    win.webContents.send('goto', null);
+                }
             },
             {
                 type: 'separator',
