@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="settings.css">
     <script src="settings.js"></script>
-    <title>Select Theme</title>
+    <title>Settings</title>
 </head>
 <body>
     <div class="box">
@@ -54,7 +54,6 @@
         </select><br> <br><br>
         <label>Font Size : </label>
         <input type="number" , value="24", id="font-size"> <br><br><br>
-        <input type="checkbox", id="line-num"> Line Number <br><br><br>
         <label>Select Font: </label>
         <select name="font" id="font">
             <option>  Arial  </option>
@@ -117,6 +116,19 @@
             <option>  Wingdings  </option>
             <option>  Yu Gothic  </option>
         </select><br><br><br>
+        <label>Cursor Style: </label>
+        <select name="cursor" id="cursor">
+            <option value="ace">Ace</option>
+            <option value="slim">Slim</option>
+            <option value="smooth">Smooth</option>
+            <option value="wide">Wide</option>
+        </select> <br><br>
+        <input type="checkbox", id="line-num"> Line Number <br><br>
+        <input type="checkbox", id="highlight"> Hightlight Active Line <br><br>
+        <input type="checkbox",id="scroll-anime"> Animate Scroll <br><br>
+        <input type="checkbox", id="fadefold"> Fade Fold Widgets <br><br>
+        <label>Scroll Speed: </label> <input type="number" name="" id="scrollSpeed", value="2" , style="width: 100px;"> <br><br>
+        <label>Tab Size: </label><input type="number", id="tab-size", value="2", style="width: 100px;"> <br><br>
         <button id="apply", onclick="send_settings()">Apply Settings</button>
     </div>
 </body>

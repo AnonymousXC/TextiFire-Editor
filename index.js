@@ -176,6 +176,9 @@ const menu_templete = [
             },
             {
                 label: 'Replace',
+                click: () => {
+                    win.webContents.send('replace', null);
+                }
             },
             {
                 label: 'Go To...',

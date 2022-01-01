@@ -35,6 +35,11 @@ function close_goto() {
     document.getElementById('goto').style.visibility = 'hidden';
 }
 
+function close_replace() {
+    document.getElementById('find').style.visibility = 'hidden'
+    document.getElementById('replace').style.visibility = 'hidden';
+}
+
 function find() {
     const txt = document.getElementById('find-txt').value;
     console.log('running');
@@ -57,6 +62,9 @@ function goto_line() {
     editor_1.scrollToLine(line, true, true);
 }
 
+function replace_txt() {
+    console.log('changes');
+}
 
 
 ipcRenderer.on('new' , (event) => {
@@ -91,6 +99,11 @@ ipcRenderer.on('goto', (event) => {
     document.getElementById('goto').style.visibility = 'visible';
 });
 
+ipcRenderer.on('replace', (event) => {
+    document.getElementById('find').style.visibility = 'visible';
+    document.getElementById('replace').style.visibility = 'visible';
+})
+
 
 ipcRenderer.on('change_settings', (event, settings) => {
     const theme_path = 'ace/theme/' + settings[0].toLowerCase();
@@ -99,7 +112,13 @@ ipcRenderer.on('change_settings', (event, settings) => {
     editor_1.setOptions({
         fontSize: settings[1],
         showLineNumbers: settings[2],
-        fontFamily: settings[3],
+        //fontFamily: //settings[3],
+        cursorStyle: settings[4],
+        highlightActiveLine: settings[5],
+        animatedScroll: settings[6],
+        fadeFoldWidgets: settings[7],
+        scrollSpeed: settings[8],
+        tabSize: settings[9],
     });
     if(editor_2 != null){
         editor_2.setTheme(f_t_p);

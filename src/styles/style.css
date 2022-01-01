@@ -43,12 +43,31 @@
     background-color: rgba(0, 0, 255, 0.2);
 }
 
-#goto {
+#replace {
     position: absolute;
     background-color: white;
     padding-top: 2px;
     right: 10px;
     top: 50px;
+    height: 20px;
+    width: 220px;
+    display: inline-block;
+    font-size: x-small;
+    /* visibility: hidden; */
+}
+
+#replace-txt{
+    font-size: 10px;
+    height: 10px;
+    width: 80px;
+}
+
+#goto {
+    position: absolute;
+    background-color: white;
+    padding-top: 2px;
+    right: 10px;
+    top: 90px;
     height: 20px;
     width: 150px;
     display: inline-block;
