@@ -11,6 +11,7 @@
     <h1>TextiFire</h1>
     <img src="./.github/images/pic 1.png"> <br><br>
     <img src="./.github/images/pic 2.png"> <br><br>
-    <p>Wide Variety of Themes.</p>
+    <p>Wide Variety of Themes.</p> <br><br>
+    <img src="./.github/images/pic 3.png" alt="">
 </body>
 </html>
