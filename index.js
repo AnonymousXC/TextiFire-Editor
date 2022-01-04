@@ -73,6 +73,15 @@ const menu_templete = [
                     accelerator: 'Ctrl + O',
                },
                {
+                    label: "Open Folder",
+                    click: () => {
+                         const folder_path = dialog.showOpenDialogSync(win, {
+                              properties: ['openDirectory']
+                         });
+                         win.webContents.send("open_folder", folder_path);
+                    }
+               },
+               {
                     label: 'Save',
                     click: () => {
                          if(!savepath){

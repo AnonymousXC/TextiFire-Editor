@@ -7,7 +7,7 @@
     position: fixed;
     top: 0;
     bottom: 0;
-    left: 0;
+    left: 250px;
     right: 0;
 }
 
@@ -79,4 +79,40 @@
     font-size: 10px;
     height: 10px;
     width: 80px;
+}
+
+
+#left-bar {
+    position: fixed;
+    width: 50px;
+    height: 100%;
+    text-align: center;
+    background-color: #010101;
+}
+
+#toogle-file {
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 85%;
+}
+
+#file-exe {
+    position: fixed;
+    left: 50px;
+    width: 200px;
+    height: 100%;
+    background-color: #1c1c1c;
+    color: white;
+}
+
+.file-btn {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    color: white;
+}
+
+.file-btn:hover {
+    background-color: red;
 }

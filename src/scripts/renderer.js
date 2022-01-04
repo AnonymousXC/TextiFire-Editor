@@ -1,7 +1,9 @@
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
+const path = require('path')
 
-var editor_2;
+var editor_2, files = [], file_data = [];
+
 
 function open_file(path) {
     const data = fs.readFileSync(path, {encoding: 'utf-8' , flag: 'r'});
@@ -181,3 +183,74 @@ ipcRenderer.on('dd_tt', (event) => {
     const tt_yy = date.getHours() + ':' + date.getMinutes() + ' Hours ' + date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' ';
     editor_1.insert(tt_yy);
 });
+
+
+function toggle_file_exe() {
+    const file_exe = document.getElementById('file-exe');
+    const style = window.getComputedStyle(file_exe);
+    const visibility = style.getPropertyValue("visibility");
+    if(visibility == "visible"){
+        file_exe.style.visibility = 'hidden'
+        document.getElementById("editor-1").style.left = "50px";
+    }
+    else if(visibility == "hidden"){
+        file_exe.style.visibility = "visible";
+        document.getElementById("editor-1").style.left = "250px";
+    }
+}
+
+
+ipcRenderer.on("open_folder", (event, folder_path) => {
+    console.log("Folder");
+    readFilesSync(folder_path[0]);
+});
+
+
+function readFilesSync(dir) {
+    const files = [];
+    const file_exe = document.getElementById("file-exe");
+  
+    fs.readdirSync(dir).forEach(filename => {
+      const name = path.parse(filename).name;
+      const ext = path.parse(filename).ext;
+      const filepath = path.resolve(dir, filename);
+      const stat = fs.statSync(filepath);
+      const isFile = stat.isFile();
+  
+      if (isFile) files.push({ filepath, name, ext, stat });
+    });
+  
+    files.sort((a, b) => {
+      return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+    });
+  
+    for(var i = 0; i < files.length; i++){
+        const btn = document.createElement('button');
+        const br = document.createElement("br");
+        btn.textContent = files[i].name + files[i].ext;
+        btn.onclick = readFileDir;
+        btn.id = files[i].name;
+        btn.className = "file-btn";
+        file_exe.appendChild(btn);
+        file_exe.appendChild(br);
+    }
+
+    for(var j = 0; j < files.length; j++){
+        const file_path = files[j].filepath;
+        const data = fs.readFileSync(file_path, {encoding:'utf-8', flag:'r'});
+        const file = files[j].name + files[j].ext;
+        file_data.push({data , file});
+    }
+}
+
+
+function readFileDir() {
+    const file_name = this.textContent;
+    for(var i = 0; i < file_data.length; i++){
+        console.log(file_data[i].file);
+        if(file_data[i].file == file_name){
+            editor_1.setValue(file_data[i].data);
+            break;
+        }
+    }
+}
