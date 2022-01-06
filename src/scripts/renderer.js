@@ -2,18 +2,21 @@ const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
 const path = require('path')
 
-var editor_2, files = [], file_data = [];
+var editor_2, files = [], file_data = [], subfolders = [], current_dir = [];
+const file_extension_open = [".png", ".jpg", ".jpeg", ".svg", ".Ink", ".exe", ".pdf", ".docx"]
+var folder_path_create = "C:/Users/CV/Desktop/Projects/Electron Project/Noter Rewritten 2";
 
 
 function open_file(path) {
     const data = fs.readFileSync(path, {encoding: 'utf-8' , flag: 'r'});
     editor_1.setValue(data);
+    editor_1.clearSelection();
 }
 
 function save_file(path) {
     try{
-    const data = editor_1.getValue();
-    fs.writeFileSync(path, data, {encoding: 'utf-8' , flag:'w'});
+        const data = editor_1.getValue();
+        fs.writeFileSync(path, data, {encoding: 'utf-8' , flag:'w'});
     }
     catch(error){
         window.alert(error);
@@ -24,7 +27,7 @@ function save_file(path) {
 function search_gog() {
     const txt = window.getSelection().toString();
     if(txt)
-        shell.openExternal('https://www.google.com/search?q=' + txt)
+    shell.openExternal('https://www.google.com/search?q=' + txt)
 }
 
 function close_search() {
@@ -68,6 +71,47 @@ function goto_line() {
 
 function replace_txt() {
     console.log('changes');
+}
+
+function open_stackover() {
+    shell.openExternal("https://stackoverflow.com/");
+}
+
+function open_github() {
+    shell.openExternal("https://github.com");
+}
+
+function open_itch() {
+    shell.openExternal('https://itch.io');
+}
+
+
+function create_file() {
+    const file_exe = document.getElementById('file-exe');
+    const no_of_input = file_exe.getElementsByTagName('input').length;
+    if(folder_path_create && no_of_input == 0){
+        const name_inp = document.createElement('input');
+        name_inp.className = "name-inp";
+        name_inp.onkeydown = file_created;
+        name_inp.onblur = remove_box;
+        file_exe.appendChild(name_inp);
+        name_inp.focus();
+    }
+}
+
+function file_created() {
+    if(event.keyCode == 13){
+        const file_name = this.value;
+        this.remove();
+        const path = folder_path_create + "/" + file_name;
+        fs.writeFileSync(path, "", {encoding:'utf-8'});
+        readDirFiles(folder_path_create);
+    }
+}
+
+
+function remove_box() {
+    this.remove();
 }
 
 
@@ -201,29 +245,35 @@ function toggle_file_exe() {
 
 
 ipcRenderer.on("open_folder", (event, folder_path) => {
-    console.log("Folder");
-    readFilesSync(folder_path[0]);
+    readDirFiles(folder_path[0]);
+    folder_path_create = folder_path[0];
 });
 
 
-function readFilesSync(dir) {
+function readDirFiles(dir) {
+    current_dir = dir;
     const files = [];
     const file_exe = document.getElementById("file-exe");
-  
+    file_exe.textContent = "";
+    file_data = [];
+    subfolders = [];
+    
     fs.readdirSync(dir).forEach(filename => {
-      const name = path.parse(filename).name;
-      const ext = path.parse(filename).ext;
-      const filepath = path.resolve(dir, filename);
-      const stat = fs.statSync(filepath);
-      const isFile = stat.isFile();
-  
-      if (isFile) files.push({ filepath, name, ext, stat });
+        const name = path.parse(filename).name;
+        const ext = path.parse(filename).ext;
+        const filepath = path.resolve(dir, filename);
+        const stat = fs.statSync(filepath);
+        const isFile = stat.isFile();
+        const isDir = stat.isDirectory();
+
+        if (isFile) files.push({ filepath, name, ext, stat });
+        if (isDir) subfolders.push({filepath, name});
     });
-  
+    
     files.sort((a, b) => {
-      return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+        return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
     });
-  
+    
     for(var i = 0; i < files.length; i++){
         const btn = document.createElement('button');
         const br = document.createElement("br");
@@ -234,12 +284,33 @@ function readFilesSync(dir) {
         file_exe.appendChild(btn);
         file_exe.appendChild(br);
     }
-
+    
     for(var j = 0; j < files.length; j++){
         const file_path = files[j].filepath;
-        const data = fs.readFileSync(file_path, {encoding:'utf-8', flag:'r'});
+        var data = "";
+        try {
+            data = fs.readFileSync(file_path, {encoding:'utf-8', flag:'r'})
+        }
+        catch(err){
+            console.log(err)
+        };
         const file = files[j].name + files[j].ext;
-        file_data.push({data , file});
+        const extension = files[j].ext;
+        const path = files[j].filepath;
+        file_data.push({data , file, extension, path});
+    }
+
+    for(var j = 0; j < subfolders.length; j++){
+        const folder_path = subfolders[j].filepath;
+        const name = subfolders[j].name;
+        const br = document.createElement('br');
+        const btn = document.createElement('button');
+        btn.className = "folder-btn";
+        btn.textContent = name;
+        btn.id = subfolders[j].filepath;
+        btn.onclick = open_subfolder;
+        file_exe.appendChild(br);
+        file_exe.appendChild(btn);
     }
 }
 
@@ -247,10 +318,27 @@ function readFilesSync(dir) {
 function readFileDir() {
     const file_name = this.textContent;
     for(var i = 0; i < file_data.length; i++){
-        console.log(file_data[i].file);
         if(file_data[i].file == file_name){
+            if(file_extension_open.includes(file_data[i].extension) != true){
             editor_1.setValue(file_data[i].data);
+            editor_1.clearSelection();
+            }
+            if(file_extension_open.includes(file_data[i].extension) == true){
+                shell.openPath(file_data[i].path);
+                console.log("Opening");
+            }
             break;
         }
     }
+}
+
+
+function open_subfolder() {
+    const folder_path = this.id;
+    readDirFiles(folder_path)
+}
+
+function one_level_up() {
+    const up_path = path.join(current_dir, "../");
+    readDirFiles(up_path);
 }

@@ -15,14 +15,29 @@
 
 <body>
 
+
     <div id="left-bar">
-        <button id="toogle-file", onclick="toggle_file_exe()">
-            &#38
+        <button id="icon-btn", onclick="toggle_file_exe()">
+            <img src="./src/img/Folder Icon.png", alt="", id="img-btn">
+        </button>
+        <button id="icon-btn", onclick="open_stackover()">
+            <img src="./src/img/StackOverFlow.png", alt="", id="img-btn">
+        </button>
+        <button id="icon-btn", onclick="open_github()">
+            <img src="./src/img/Github.png" alt="" id="img-btn">
+        </button>
+        <button id="icon-btn", onclick="open_itch()">
+            <img src="./src/img/Itch.io.png" alt="" id="img-btn">
         </button>
     </div>
-
+    <div id="top-bar">
+        <button class="bar-btn", onclick="create_file()">New File</button>
+        <button class="bar-btn">New Folder</button>
+    </div>
+    <button id="one-level-up", onclick="one_level_up()">&#8593 </button>
     <div id="file-exe">
     </div>
+
 
     <div id="editor-1">Hello World!</div>
     <div id="find">

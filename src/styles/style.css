@@ -90,20 +90,30 @@
     background-color: #010101;
 }
 
-#toogle-file {
+#icon-btn{
+    width: 50px;
+    border: none;
     background-color: transparent;
     border: none;
-    color: white;
-    width: 85%;
+}
+
+
+#img-btn {
+    margin-top: 10px;
+    width: 45px;
+    height: auto;
+    background-color: transparent;
 }
 
 #file-exe {
     position: fixed;
+    top: 20px;
     left: 50px;
+    bottom: 0px;
     width: 200px;
-    height: 100%;
     background-color: #1c1c1c;
     color: white;
+    overflow: auto;
 }
 
 .file-btn {
@@ -114,5 +124,68 @@
 }
 
 .file-btn:hover {
-    background-color: red;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+::-webkit-scrollbar{
+    width: 5px;
+    border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 5px;
+    border-radius: 15px;
+    background-color: rgba(225, 225, 255, 0.4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(225, 225, 225, 0.8);
+}
+
+
+
+#top-bar {
+    background-color: black;
+    position: fixed;
+    width: 200px;
+    height: 20px;
+    color: white;
+    text-align: center;
+    left: 50px;
+}
+
+.bar-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.name-inp{
+    width: 195px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+}
+
+
+.folder-btn{
+    width: 100%;
+    background-color: rgba(80, 250, 123, 1);
+    border: none;
+}
+
+#one-level-up {
+    position: relative;
+    z-index: 5;
+    left: 50px;
+    top: 20px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 30px;
+    border-radius: 5px;
+}
+
+#one-level-up:hover {
+    background-color: rgba(255, 255, 255, 0.5);
 }

@@ -434,3 +434,4 @@ function shortcuts() {
           win.webContents.zoomFactor = 1.0;
      });
 }
+
