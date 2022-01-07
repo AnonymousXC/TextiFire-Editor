@@ -1,8 +1,8 @@
 const {ipcRenderer, shell} = require('electron');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 
-var editor_2, files = [], file_data = [], subfolders = [], current_dir = [];
+var editor_2, files = [], file_data = [], subfolders = [], current_dir = "", folder_save = "";
 const file_extension_open = [".png", ".jpg", ".jpeg", ".svg", ".Ink", ".exe", ".pdf", ".docx"]
 var folder_path_create = "C:/Users/CV/Desktop/Projects/Electron Project/Noter Rewritten 2";
 
@@ -89,9 +89,10 @@ function open_itch() {
 function create_file() {
     const file_exe = document.getElementById('file-exe');
     const no_of_input = file_exe.getElementsByTagName('input').length;
-    if(folder_path_create && no_of_input == 0){
+    if(current_dir && no_of_input == 0){
         const name_inp = document.createElement('input');
         name_inp.className = "name-inp";
+        name_inp.id = "input-0";
         name_inp.onkeydown = file_created;
         name_inp.onblur = remove_box;
         file_exe.appendChild(name_inp);
@@ -100,12 +101,18 @@ function create_file() {
 }
 
 function file_created() {
-    if(event.keyCode == 13){
+    if(event.keyCode == 13 && current_dir){
         const file_name = this.value;
-        this.remove();
-        const path = folder_path_create + "/" + file_name;
+        const path = current_dir + "/" + file_name;
         fs.writeFileSync(path, "", {encoding:'utf-8'});
-        readDirFiles(folder_path_create);
+        readDirFiles(current_dir);
+        const inp = document.getElementById('input-0');
+        try{
+            inp.remove();
+        }
+        catch(err){
+            
+        };
     }
 }
 
@@ -113,6 +120,37 @@ function file_created() {
 function remove_box() {
     this.remove();
 }
+
+function creater_folder() {
+    const file_exe = document.getElementById('file-exe');
+    const no_of_child = file_exe.getElementsByTagName('input').length;
+    if(no_of_child == 0 && current_dir){
+        const box = document.createElement('input');
+        box.className = "name-inp";
+        box.id = "input-0";
+        file_exe.appendChild(box);
+        box.onkeydown = folder_created;
+        box.focus();
+        box.onblur = remove_box;
+    }
+}
+
+function folder_created() {
+    if (event.keyCode == 13 && current_dir) {
+        const folder_name = this.value;
+        const folder_path = path.join(current_dir, folder_name);
+        fs.mkdirSync(folder_path);
+        readDirFiles(current_dir);
+        const inp = document.getElementById('input-0');
+        try{
+            inp.remove();
+        }
+        catch(err){
+
+        };
+    }
+}
+
 
 
 ipcRenderer.on('new' , (event) => {
@@ -133,10 +171,6 @@ ipcRenderer.on('search_gog', (event) => {
 });
 
 
-// ipcRenderer.on('find_word', (event, word) => {
-//     document.getElementById('find').style.visibility = 'visible';
-//     editor_1.findAll(word);
-// });
 
 
 ipcRenderer.on('find', (event) => {
@@ -322,6 +356,7 @@ function readFileDir() {
             if(file_extension_open.includes(file_data[i].extension) != true){
             editor_1.setValue(file_data[i].data);
             editor_1.clearSelection();
+            folder_save = file_data[i].path;
             }
             if(file_extension_open.includes(file_data[i].extension) == true){
                 shell.openPath(file_data[i].path);
