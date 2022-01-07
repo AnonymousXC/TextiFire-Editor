@@ -4,7 +4,6 @@ const path = require('path');
 
 var editor_2, files = [], file_data = [], subfolders = [], current_dir = "", folder_save = "";
 const file_extension_open = [".png", ".jpg", ".jpeg", ".svg", ".Ink", ".exe", ".pdf", ".docx"]
-var folder_path_create = "C:/Users/CV/Desktop/Projects/Electron Project/Noter Rewritten 2";
 
 
 function open_file(path) {
